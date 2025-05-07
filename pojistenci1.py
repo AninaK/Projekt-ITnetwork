@@ -23,7 +23,10 @@ class DatabazePojistencu:
             print("V databázi nebyl nalezený žádný pojištěný.")
 
     def najit_podle_jmena(self, jmeno, prijmeni):
-        nalezeno = [osoba for osoba in self.pojisteni_lide if osoba.jmeno.lower() == jmeno.lower() and osoba.prijmeni.lower() == prijmeni.lower()]
+        nalezeno = []
+        for osoba in self.pojisteni_lide:
+            if osoba.jmeno.lower() == jmeno.lower() and osoba.prijmeni.lower() == prijmeni.lower():
+                nalezeno.append(osoba)
         return nalezeno
 
 class UzivatelskeRozhrani:
@@ -83,7 +86,7 @@ class Aplikace:
             UzivatelskeRozhrani.zobraz_menu()
             volba = input("Vyberte volbu 1 - 4: ")
 
-            if volba == '1':  # Add insured person
+            if volba == '1':  
                 jmeno = UzivatelskeRozhrani.prazdne_pole("Zadejte jméno: ")
                 prijmeni = UzivatelskeRozhrani.prazdne_pole("Zadejte příjmení: ")
                 vek = UzivatelskeRozhrani.zadej_vek("Zadejte věk: ")
