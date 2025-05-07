@@ -1,112 +1,112 @@
-class InsuredPerson:
-    def __init__(self, name, surname, age, phone):
-        self.name = name
-        self.surname = surname
-        self.age = age
-        self.phone = phone
-
+class PojistenaOsoba:
+    def __init__(self, jmeno, prijmeni, vek, telefon):
+        self.jmeno = jmeno
+        self.prijmeni = prijmeni
+        self.vek = vek
+        self.telefon = telefon
+    
     def __str__(self):
-        return f"{self.name} {self.surname}, Age: {self.age}, Phone: {self.phone}"
-
-class InsuranceDatabase:
+        return f"{self.jmeno} {self.prijmeni}, věk: {self.vek}, telefonní číslo: {self.telefon}"
+    
+class DatabazePojistencu:
     def __init__(self):
-        self.insured_people = []
+        self.pojisteni_lide = []
+    
+    def pridat_osobu(self, osoba):
+        self.pojisteni_lide.append(osoba)
 
-    def add_person(self, person):
-        self.insured_people.append(person)
-
-    def display_all(self):
-        if self.insured_people:
-            for person in self.insured_people:
-                print(person)
+    def zobraz_vse(self):
+        if self.pojisteni_lide:
+            for osoba in self.pojisteni_lide:
+                print(osoba)
         else:
-            print("No insured persons in the database.")
+            print("V databázi nebyl nalezený žádný pojištěný.")
 
-    def find_by_name(self, name, surname):
-        found = [person for person in self.insured_people if person.name.lower() == name.lower() and person.surname.lower() == surname.lower()]
-        return found
+    def najit_podle_jmena(self, jmeno, prijmeni):
+        nalezeno = [osoba for osoba in self.pojisteni_lide if osoba.jmeno.lower() == jmeno.lower() and osoba.prijmeni.lower() == prijmeni.lower()]
+        return nalezeno
 
-class UserInterface:
+class UzivatelskeRozhrani:
     @staticmethod
-    def get_non_empty_input(prompt):
+    def prazdne_pole(pozadavek):
         while True:
-            user_input = input(prompt)
-            if user_input.strip():  # Ensure the input is not empty
-                return user_input
+            uzivatel_input = input(pozadavek)
+            if uzivatel_input.strip():  
+                return uzivatel_input
             else:
-                print("Input cannot be empty. Please try again.")
+                print("Požadavek nesmí být prazdný. Zadejte požadavek.")
 
     @staticmethod
-    def get_age_input(prompt):
+    def zadej_vek(pozadavek):
         while True:
             try:
-                age = int(input(prompt))
-                if age > 0:  # Valid age (must be a positive integer)
-                    return age
+                vek = int(input(pozadavek))
+                if vek > 0: 
+                    return vek
                 else:
-                    print("Age must be a positive number. Please try again.")
+                    print("Věk musí být kladné číslo, zkuste znovu.")
             except ValueError:
-                print("Invalid input. Please enter a valid number for age.")
+                print("Chybný požadavek, zadaná hodnota musí být číslo.")
 
     @staticmethod
-    def get_phone_input(prompt):
+    def zadej_telefon(pozadavek):
         while True:
-            phone = input(prompt)
-            if phone.isdigit() and len(phone) == 9:  # Validate phone number (10 digits)
-                return phone
+            telefonniCislo = input(pozadavek)
+            if telefonniCislo.isdigit() and len(telefonniCislo) == 9: 
+                return telefonniCislo
             else:
-                print("Please enter a valid 9-digit phone number.")
-
+                print("Prosím zadejte devítimístné telefonní číslo.")
+    
     @staticmethod
-    def show_menu():
-        print("\nInsurance Client Database")
-        print("1. Add Insured Person")
-        print("2. Display All Insured People")
-        print("3. Search Insured Person by Name and Surname")
-        print("4. Exit")
+    def zobraz_menu():
+        print("\nDatabáze pojištěnců")
+        print("1. Přidat pojištěnou osobu")
+        print("2. Zobrazit všechny pojištěné osoby")
+        print("3. Vyhledat osobu podle jména a přijmení")
+        print("4. Konec")
 
+    
     @staticmethod
-    def show_search_results(results):
-        if results:
-            for person in results:
-                print(person)
+    def vysledky_vyhledavani(vysledky):
+        if vysledky:
+            for osoba in vysledky:
+                print(osoba)
         else:
-            print("No matching insured person found.")
+            print("Nenalezena žádná pojištěná osoba.")
 
-class InsuranceApp:
+class Aplikace:
     def __init__(self):
-        self.database = InsuranceDatabase()
+        self.databaze = DatabazePojistencu()
 
     def run(self):
         while True:
-            UserInterface.show_menu()
-            choice = input("Enter your choice (1-4): ")
+            UzivatelskeRozhrani.zobraz_menu()
+            volba = input("Vyberte volbu 1 - 4: ")
 
-            if choice == '1':  # Add insured person
-                name = UserInterface.get_non_empty_input("Enter name: ")
-                surname = UserInterface.get_non_empty_input("Enter surname: ")
-                age = UserInterface.get_age_input("Enter age: ")
-                phone = UserInterface.get_phone_input("Enter phone number: ")
-                person = InsuredPerson(name, surname, age, phone)
-                self.database.add_person(person)
+            if volba == '1':  # Add insured person
+                jmeno = UzivatelskeRozhrani.prazdne_pole("Zadejte jméno: ")
+                prijmeni = UzivatelskeRozhrani.prazdne_pole("Zadejte příjmení: ")
+                vek = UzivatelskeRozhrani.zadej_vek("Zadejte věk: ")
+                telefon = UzivatelskeRozhrani.zadej_telefon("Zadejte telefonní číslo: ")
+                osoba = PojistenaOsoba(jmeno, prijmeni, vek, telefon)
+                self.databaze.pridat_osobu(osoba)
                 print("Data byla uložena.")
+            
+            elif volba == '2': #zobrazit vsechny pojistence
+                self.databaze.zobraz_vse()
+            
+            elif volba == '3': #najit pojistence podle jmena
+                jmeno = UzivatelskeRozhrani.prazdne_pole("Zadejte jméno: ")
+                prijmeni = UzivatelskeRozhrani.prazdne_pole("Zadejte přijmení: ")
+                vysledek = self.databaze.najit_podle_jmena(jmeno, prijmeni)
+                UzivatelskeRozhrani.vysledky_vyhledavani(vysledek)
 
-            elif choice == '2':  # Display all insured people
-                self.database.display_all()
-
-            elif choice == '3':  # Search for insured person by name and surname
-                name = UserInterface.get_non_empty_input("Enter name to search: ")
-                surname = UserInterface.get_non_empty_input("Enter surname to search: ")
-                results = self.database.find_by_name(name, surname)
-                UserInterface.show_search_results(results)
-
-            elif choice == '4':  # Exit the program
-                print("Exiting the program...")
+            elif volba == "4": #ukoncit program
+                print("Program se ukončí.")
                 break
 
             else:
-                print("Invalid choice. Please try again.")
-
+                print("Nesprávná volba, zkuste znovu.")
 if __name__ == "__main__":
-    app = InsuranceApp()
+    app = Aplikace()
     app.run()
