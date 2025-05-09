@@ -12,7 +12,7 @@ class DatabazePojistencu:
     def __init__(self):
         self.pojisteni_lide = []
     
-    def pridat_osobu(self, osoba):
+    def pridej_osobu(self, osoba):
         self.pojisteni_lide.append(osoba)
 
     def zobraz_vse(self):
@@ -22,7 +22,7 @@ class DatabazePojistencu:
         else:
             print("V databázi nebyl nalezený žádný pojištěný.")
 
-    def najit_podle_jmena(self, jmeno, prijmeni):
+    def najdi_podle_jmena(self, jmeno, prijmeni):
         nalezeno = []
         for osoba in self.pojisteni_lide:
             if osoba.jmeno.lower() == jmeno.lower() and osoba.prijmeni.lower() == prijmeni.lower():
@@ -30,14 +30,6 @@ class DatabazePojistencu:
         return nalezeno
 
 class UzivatelskeRozhrani:
-    @staticmethod
-    def prazdne_pole(pozadavek):
-        while True:
-            uzivatel_input = input(pozadavek)
-            if uzivatel_input.strip():  
-                return uzivatel_input
-            else:
-                print("Požadavek nesmí být prazdný. Zadejte požadavek.")
 
     @staticmethod
     def zadej_vek(pozadavek):
@@ -86,13 +78,13 @@ class Aplikace:
             UzivatelskeRozhrani.zobraz_menu()
             volba = input("Vyberte volbu 1 - 4: ")
 
-            if volba == '1':  
+            if volba == '1':  # Add insured person
                 jmeno = UzivatelskeRozhrani.prazdne_pole("Zadejte jméno: ")
                 prijmeni = UzivatelskeRozhrani.prazdne_pole("Zadejte příjmení: ")
                 vek = UzivatelskeRozhrani.zadej_vek("Zadejte věk: ")
                 telefon = UzivatelskeRozhrani.zadej_telefon("Zadejte telefonní číslo: ")
                 osoba = PojistenaOsoba(jmeno, prijmeni, vek, telefon)
-                self.databaze.pridat_osobu(osoba)
+                self.databaze.pridej_osobu(osoba)
                 print("Data byla uložena.")
             
             elif volba == '2': #zobrazit vsechny pojistence
@@ -101,7 +93,7 @@ class Aplikace:
             elif volba == '3': #najit pojistence podle jmena
                 jmeno = UzivatelskeRozhrani.prazdne_pole("Zadejte jméno: ")
                 prijmeni = UzivatelskeRozhrani.prazdne_pole("Zadejte přijmení: ")
-                vysledek = self.databaze.najit_podle_jmena(jmeno, prijmeni)
+                vysledek = self.databaze.najdi_podle_jmena(jmeno, prijmeni)
                 UzivatelskeRozhrani.vysledky_vyhledavani(vysledek)
 
             elif volba == "4": #ukoncit program
@@ -110,6 +102,7 @@ class Aplikace:
 
             else:
                 print("Nesprávná volba, zkuste znovu.")
+                
 if __name__ == "__main__":
     app = Aplikace()
     app.run()
